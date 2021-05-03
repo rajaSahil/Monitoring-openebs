@@ -1,0 +1,18 @@
+{{- if .Values.casType }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: svc-open-monitor-cstor
+  labels:
+    app: openebs
+{{- include "monitoring-stack.labels" $ | indent 4 }}
+spec:
+  endpoints:
+    - path: /metrics
+      port: exporter
+  namespaceSelector:
+    any: true
+  selector:
+    matchLabels:
+      openebs.io/cas-type: {{ .Values.casType }}
+{{ end -}}
